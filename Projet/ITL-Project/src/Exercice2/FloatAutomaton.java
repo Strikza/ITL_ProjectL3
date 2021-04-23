@@ -2,12 +2,21 @@ package Exercice2;
 
 import java.util.Scanner;
 
-public class FloatAutomata {
+public class FloatAutomaton {
+
+    ////////////////////////////
+    //  ATTRIBUTES
+    ////////////////////////////
 
     private String m;
-    private Scanner scan;
+    private final Scanner scan;
 
-    public FloatAutomata(){
+
+    ////////////////////////////
+    //  CLASS METHODS
+    ////////////////////////////
+
+    public FloatAutomaton(){
         this.scan = new Scanner(System.in);
     }
 
@@ -15,10 +24,19 @@ public class FloatAutomata {
         return this.m;
     }
 
-    public void setM(){
+    public void setMScan(){
         System.out.print(" Veuillez entrer un réel ('stop' to finish) : ");
         this.m = this.scan.next();
     }
+
+    public void setM(String m){
+        this.m = m;
+    }
+
+
+    ////////////////////////////
+    //  ÉTATS
+    ////////////////////////////
 
     // État 3 : État terminal
     private boolean reconnaitRec_3(String m){
@@ -48,7 +66,7 @@ public class FloatAutomata {
             if(c>='0' && c<='9'){
                 return this.reconnaitRec_2(m.substring(1));
             }
-            else if(c == '.'){
+            if(c == '.'){
                 return this.reconnaitRec_3(m.substring(1));
             }
             else{
@@ -66,7 +84,8 @@ public class FloatAutomata {
 
             if (c >= '0' && c <= '9') {
                 return this.reconnaitRec_2(m.substring(1));
-            } else
+            }
+            else
                 return false;
         }
     }
@@ -81,14 +100,20 @@ public class FloatAutomata {
             if(c == '+' || c == '-'){
                 return this.reconnaitRec_1(m.substring(1));
             }
-            else if (c >= '0' && c <= '9') {
+            if (c >= '0' && c <= '9') {
                 return this.reconnaitRec_2(m.substring(1));
-            } else
+            }
+            else
                 return false;
         }
     }
 
-    private void reconnaitReelRec(String mot){
+
+    ////////////////////////////
+    //  FINAL METHOD
+    ////////////////////////////
+
+    public void reconnaitReelRec(String mot){
         boolean res = this.reconnaitRec_0(mot);
 
         if(res){
@@ -99,12 +124,24 @@ public class FloatAutomata {
         }
     }
 
+
+    ////////////////////////////
+    //  MAIN
+    ////////////////////////////
+
     public static void main(String [] args){
-        FloatAutomata fa = new FloatAutomata();
-        fa.setM();
+        String [] testReel = {"123.", "123.45", "-123", "+123.34", "-123.34", "12A3.34", "123..33", "123.34.44", ".34"};
+        FloatAutomaton fa = new FloatAutomaton();
+
+        for(int i=0; i<testReel.length; i++){
+            fa.reconnaitReelRec(testReel[i]);
+        }
+
+        fa.setMScan();
+
         while(!fa.getM().equals("stop")){
             fa.reconnaitReelRec(fa.m);
-            fa.setM();
+            fa.setMScan();
         }
 
         System.out.println("Le programme se termine");
