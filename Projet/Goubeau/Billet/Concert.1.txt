@@ -1,0 +1,32 @@
+Dossier     (DOSSIER)
+Places      (places)
+CodeDossier [0-9]{8}
+Nomination  [A-Z]+(\-[A-Z]+)*
+PrenomNom   {Nomination}\/{Nomination}
+CodeConcert T([0-9]{2,6})
+NomConcert  ([A-Z]|[0-9])+(\-([A-Z]|[0-9])+)*
+Jour        (0[1-9])|([1-2][0-9])|(3[0-1])
+Mois        (0[1-9])|(1[0-2])|[1-9]
+Annee       [0-9]|[0-9]{2}
+Date        {Jour}\/{Mois}(\/{Annee})?
+Heure       ([0-1][0-9])|(2[0-3])
+Minute      ([0-5][0-9])
+Horaire     {Heure}:{Minute}
+NbPlaces    [1-9][1-9]?
+%%
+^{Dossier}     {printf("\ndossier ");}
+{CodeDossier}  {printf("codeDossier ");}
+^{PrenomNom}   {printf("prenomNom ");}
+^{CodeConcert} {printf("codeConcert ");}
+{Date}         {printf("date ");}
+{Horaire}      {printf("heure ");}
+{NbPlaces}     {printf("nb ");}
+{NomConcert}   {printf("nomConcert ");}
+{Places}       {printf("places ");}
+\n             {printf("FL\n");}
+. 
+%%
+int main(){
+   yylex();
+   printf("FinFichier\n\n");
+}
